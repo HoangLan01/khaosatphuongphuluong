@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mẫu phiếu khảo sát - UBND phường Phú Lương</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        input[type="radio"] {
+            width: 1.35rem;
+            height: 1.35rem;
+            cursor: pointer;
+            accent-color: #0f766e;
+        }
+
+        input[type="radio"]:focus-visible,
+        input[type="text"]:focus-visible,
+        button:focus-visible {
+            outline: 3px solid #14b8a6;
+            outline-offset: 3px;
+        }
+
+        .survey-table tbody tr.question-row:nth-of-type(even) {
+            background-color: #f8fafc;
+        }
+
+        .survey-table tbody tr.question-row:hover {
+            background-color: #f0fdfa;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 p-3 font-sans text-slate-900 md:p-8">
+    <main class="mx-auto max-w-6xl overflow-hidden rounded-lg bg-white shadow-xl">
+        <header class="bg-teal-800 px-5 py-7 text-white md:px-10">
+            <div class="flex flex-col items-center gap-5 text-center md:flex-row md:text-left">
+                <div class="flex h-28 w-28 shrink-0 items-center justify-center rounded bg-white p-2 shadow-lg md:h-32 md:w-32">
+                    <img
+                        src="assets/logo_phu_luong.jpg"
+                        alt="Logo phường Phú Lương"
+                        class="h-full w-full object-contain"
+                    >
+                </div>
+                <div class="max-w-4xl">
+                    <p class="text-sm font-semibold uppercase tracking-wide text-teal-50">UBND phường Phú Lương</p>
+                    <p class="mt-2 text-sm font-bold uppercase text-teal-100">Mẫu số 02</p>
+                    <h1 class="mt-2 text-2xl font-extrabold uppercase leading-tight md:text-4xl">Mẫu phiếu khảo sát</h1>
+                    <p class="mt-3 text-sm font-semibold uppercase leading-relaxed text-teal-50 md:text-base">
+                        Khảo sát đo lường mức độ hài lòng đối với các phòng chuyên môn thuộc UBND phường
+                    </p>
+                    <p class="mt-2 text-sm italic leading-relaxed text-teal-50">
+                        (Kèm theo Kế hoạch ...... /KH-UBND ngày ...... tháng ...... năm 2026 của UBND phường Phú Lương)
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <form id="surveyForm" class="p-5 md:p-10">
+            <section class="mb-10 border-b border-slate-200 pb-8">
+                <h2 class="mb-5 text-xl font-extrabold text-teal-800 md:text-2xl">I. THÔNG TIN CHUNG</h2>
+
+                <div class="mb-6 rounded-lg border border-teal-200 bg-teal-50 p-5 text-sm leading-relaxed md:text-base">
+                    <h3 class="mb-2 font-bold text-teal-900">1. Mục đích khảo sát</h3>
+                    <p class="text-justify">
+                        Để giúp UBND phường triển khai đo lường sự hài lòng của tổ chức, cá nhân đối với sự phục vụ của các phòng chuyên môn thuộc UBND phường. Kính mong Ông (bà) cung cấp thông tin đầy đủ, chính xác, khách quan đối với việc thực hiện một số nội dung của chính quyền đối với ông (bà).
+                    </p>
+                </div>
+
+                <div class="mb-6 rounded-lg border border-cyan-200 bg-cyan-50 p-5 text-sm leading-relaxed md:text-base">
+                    <h3 class="mb-2 font-bold text-cyan-900">2. Hướng dẫn trả lời</h3>
+                    <p class="text-justify">
+                        Xin Ông/Bà chọn một trong các chữ số <strong>1, 2, 3, 4, 5</strong> đối với từng nhận định; trong đó <strong>5 = Rất hài lòng, 4 = Hài lòng, 3 = Bình thường, 2 = Không hài lòng và 1 = Rất không hài lòng</strong>.
+                    </p>
+                    <div class="mt-4 grid grid-cols-1 gap-2 text-sm md:grid-cols-5">
+                        <div class="rounded border border-teal-200 bg-white p-2 text-center"><strong>5</strong><br>Rất hài lòng</div>
+                        <div class="rounded border border-teal-200 bg-white p-2 text-center"><strong>4</strong><br>Hài lòng</div>
+                        <div class="rounded border border-teal-200 bg-white p-2 text-center"><strong>3</strong><br>Bình thường</div>
+                        <div class="rounded border border-teal-200 bg-white p-2 text-center"><strong>2</strong><br>Không hài lòng</div>
+                        <div class="rounded border border-teal-200 bg-white p-2 text-center"><strong>1</strong><br>Rất không hài lòng</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-5 md:grid-cols-[1fr_2fr]">
+                    <div class="rounded-lg border border-amber-200 bg-amber-50 p-4">
+                        <p class="font-semibold text-amber-900">Mã số phiếu</p>
+                        <p class="mt-1 text-sm leading-relaxed text-amber-800">
+                            Người dân không cần nhập mã. Hệ thống tự động cấp mã từ 001 đến 200 sau khi gửi phiếu thành công.
+                        </p>
+                    </div>
+                    <div>
+                        <label class="mb-2 block font-semibold" for="linhVuc">
+                            Lĩnh vực/thủ tục hành chính đã giải quyết <span class="text-red-600">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="linhVuc"
+                            name="linhVuc"
+                            required
+                            maxlength="500"
+                            class="w-full rounded-lg border-2 border-slate-300 p-3 transition focus:border-teal-700"
+                            placeholder="Nhập lĩnh vực hoặc thủ tục hành chính đã giải quyết"
+                        >
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-10 border-b border-slate-200 pb-8">
+                <h2 class="mb-5 text-xl font-extrabold text-teal-800 md:text-2xl">II. NỘI DUNG KHẢO SÁT</h2>
+                <div id="ratingSurvey"></div>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="mb-5 text-xl font-extrabold text-teal-800 md:text-2xl">THÔNG TIN NGƯỜI TRẢ LỜI</h2>
+                <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+                    <fieldset class="rounded-lg border border-slate-200 bg-slate-50 p-5">
+                        <legend class="translate-y-3 px-1 font-bold text-slate-800">Giới tính <span class="text-red-600">*</span></legend>
+                        <div class="mt-5 space-y-3">
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="gioiTinh" value="Nam" required><span>1. Nam</span></label>
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="gioiTinh" value="Nữ"><span>2. Nữ</span></label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="rounded-lg border border-slate-200 bg-slate-50 p-5">
+                        <legend class="translate-y-3 px-1 font-bold text-slate-800">Độ tuổi <span class="text-red-600">*</span></legend>
+                        <div class="mt-5 space-y-3">
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="doTuoi" value="Từ 18 - 24 tuổi" required><span>1. Từ 18 - 24 tuổi</span></label>
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="doTuoi" value="Từ 25-34 tuổi"><span>2. Từ 25-34 tuổi</span></label>
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="doTuoi" value="Từ 35-49 tuổi"><span>3. Từ 35-49 tuổi</span></label>
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="doTuoi" value="Từ 50-60 tuổi"><span>4. Từ 50-60 tuổi</span></label>
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="doTuoi" value="Trên 60 tuổi"><span>5. Trên 60 tuổi</span></label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="rounded-lg border border-slate-200 bg-slate-50 p-5 md:col-span-2 lg:col-span-1">
+                        <legend class="translate-y-3 px-1 font-bold text-slate-800">Trình độ <span class="text-red-600">*</span></legend>
+                        <div class="mt-5 space-y-3">
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Tiểu học" required><span>1. Tiểu học</span></label>
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Trung học cơ sở (Cấp II)"><span>2. Trung học cơ sở (Cấp II)</span></label>
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Trung học phổ thông (Cấp 3)"><span>3. Trung học phổ thông (Cấp 3)</span></label>
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Đại học"><span>4. Đại học</span></label>
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Dạy nghề, Trung cấp, Cao đẳng"><span>5. Dạy nghề, Trung cấp, Cao đẳng</span></label>
+                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Sau Đại học"><span>6. Sau Đại học</span></label>
+                        </div>
+                    </fieldset>
+                </div>
+                <p class="mt-8 text-center text-lg font-bold text-teal-800">Trân trọng cảm ơn ông/bà!</p>
+            </section>
+
+            <div class="mt-10 text-center">
+                <button
+                    type="submit"
+                    id="submitButton"
+                    class="rounded-lg bg-teal-700 px-8 py-3 font-bold text-white shadow-lg transition hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                    Gửi phiếu khảo sát
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <div id="messageModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+        <div class="w-full max-w-md rounded-lg bg-white p-7 text-center shadow-2xl">
+            <div id="modalIcon" class="mb-4 text-5xl font-bold"></div>
+            <h2 id="modalTitle" class="mb-2 text-2xl font-bold text-slate-800">Thông báo</h2>
+            <p id="modalMessage" class="mb-5 text-slate-700"></p>
+            <a id="modalFileLink" href="#" target="_blank" rel="noopener noreferrer" class="mb-6 hidden font-semibold text-teal-700 underline hover:text-teal-900">
+                Xem bản PDF đã lưu
+            </a>
+            <button type="button" onclick="closeModal()" class="w-full rounded-lg bg-teal-700 px-6 py-2 font-bold text-white hover:bg-teal-800">
+                Đóng
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqP7TSKc2gjrj1Cled4-sleBhDgVerVt-ySbuuFaYZmqEgj1INa29x_kReQqW-6_Mu1g/exec";
+
+        const ratingOptions = [
+            { value: "5", label: "Rất hài lòng", color: "text-teal-700" },
+            { value: "4", label: "Hài lòng", color: "text-blue-700" },
+            { value: "3", label: "Bình thường", color: "text-amber-700" },
+            { value: "2", label: "Không hài lòng", color: "text-orange-700" },
+            { value: "1", label: "Rất không hài lòng", color: "text-red-700" }
+        ];
+
+        const surveySections = [
+            {
+                title: "I. CÔNG CHỨC TRỰC TIẾP GIẢI QUYẾT CÔNG VIỆC",
+                questions: [
+                    "1. Công chức có thái độ giao tiếp lịch sự.",
+                    "2. Công chức trả lời, giải thích, hướng dẫn kê khai hồ sơ tận tình, chu đáo, dễ hiểu.",
+                    "3. Công chức tuân thủ đúng quy định trong giải quyết công việc."
+                ]
+            },
+            {
+                title: "II. KẾT QUẢ CUNG ỨNG DỊCH VỤ HÀNH CHÍNH CÔNG",
+                questions: [
+                    "4. Kết quả mà Ông/Bà nhận được là đúng quy định (Kết quả có thể là được cấp giấy tờ hoặc bị từ chối cấp giấy tờ).",
+                    "5. Kết quả mà Ông/Bà nhận được có thông tin đầy đủ, chính xác."
+                ]
+            },
+            {
+                title: "III. TIẾP NHẬN, XỬ LÝ CÁC Ý KIẾN GÓP Ý, PHẢN ÁNH, KIẾN NGHỊ",
+                questions: [
+                    "6. Cơ quan có bố trí hình thức tiếp nhận góp ý, phản ánh, kiến nghị của người dân, tổ chức.",
+                    "7. Ông/Bà dễ dàng thực hiện góp ý, phản ánh, kiến nghị.",
+                    "8. Cơ quan tiếp nhận và xử lý tích cực các góp ý, phản ánh, kiến nghị của Ông/Bà.",
+                    "9. Cơ quan thông báo kịp thời kết quả xử lý các ý kiến góp ý, phản ánh, kiến nghị cho Ông/Bà."
+                ]
+            }
+        ];
+
+        function tableHeader() {
+            return `
+                <thead class="bg-slate-100 text-center">
+                    <tr>
+                        <th scope="col" class="w-1/2 min-w-72 px-4 py-4 text-left text-sm font-bold text-slate-900">Nhận định</th>
+                        ${ratingOptions.map(option => `
+                            <th scope="col" class="min-w-24 px-2 py-4 text-sm font-bold ${option.color}">
+                                <span class="text-lg">${option.value}</span>
+                                <span class="mt-1 block text-xs font-semibold">${option.label}</span>
+                            </th>
+                        `).join("")}
+                    </tr>
+                </thead>
+            `;
+        }
+
+        function questionRow(question, inputName) {
+            return `
+                <tr class="question-row border-t border-slate-200">
+                    <td class="px-4 py-3 text-sm leading-relaxed text-slate-900">${question}</td>
+                    ${ratingOptions.map((option, index) => `
+                        <td class="px-2 py-3 text-center">
+                            <label class="inline-flex cursor-pointer items-center justify-center p-2" aria-label="${question} - ${option.value} ${option.label}">
+                                <input type="radio" name="${inputName}" value="${option.value}" ${index === 0 ? "required" : ""}>
+                            </label>
+                        </td>
+                    `).join("")}
+                </tr>
+            `;
+        }
+
+        function surveyTable(body) {
+            return `
+                <div class="overflow-x-auto rounded-lg border border-slate-200 shadow-sm">
+                    <table class="survey-table min-w-[760px] divide-y divide-slate-200">
+                        ${tableHeader()}
+                        <tbody class="bg-white">${body}</tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        let questionIndex = 1;
+        const ratingBody = surveySections.map(section => {
+            const sectionRow = `
+                <tr class="border-t border-teal-200 bg-teal-100">
+                    <th colspan="6" class="px-4 py-3 text-left text-sm font-extrabold text-teal-900">${section.title}</th>
+                </tr>
+            `;
+            const rows = section.questions.map(question => {
+                const row = questionRow(question, `q_${questionIndex}`);
+                questionIndex += 1;
+                return row;
+            }).join("");
+            return sectionRow + rows;
+        }).join("");
+
+        document.getElementById("ratingSurvey").innerHTML = surveyTable(ratingBody);
+
+        const form = document.getElementById("surveyForm");
+        const submitButton = document.getElementById("submitButton");
+        const modal = document.getElementById("messageModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalMessage = document.getElementById("modalMessage");
+        const modalIcon = document.getElementById("modalIcon");
+        const modalFileLink = document.getElementById("modalFileLink");
+
+        function getRadioValue(name) {
+            const checked = document.querySelector(`input[name="${name}"]:checked`);
+            return checked ? checked.value : "";
+        }
+
+        function collectPayload() {
+            const payload = {
+                linhVuc: document.getElementById("linhVuc").value.trim()
+            };
+
+            for (let index = 1; index <= 9; index += 1) {
+                payload[`q_${index}`] = getRadioValue(`q_${index}`);
+            }
+
+            payload.gioiTinh = getRadioValue("gioiTinh");
+            payload.doTuoi = getRadioValue("doTuoi");
+            payload.trinhDo = getRadioValue("trinhDo");
+            return payload;
+        }
+
+        function setSubmitting(isSubmitting) {
+            submitButton.disabled = isSubmitting;
+            submitButton.textContent = isSubmitting ? "Đang gửi..." : "Gửi phiếu khảo sát";
+        }
+
+        function showModal(title, message, isSuccess, fileUrl = "") {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            modalIcon.textContent = isSuccess ? "✓" : "!";
+            modalIcon.className = `mb-4 text-5xl font-bold ${isSuccess ? "text-teal-600" : "text-red-600"}`;
+            modalFileLink.href = fileUrl || "#";
+            modalFileLink.classList.toggle("hidden", !fileUrl);
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function closeModal() {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            if (SCRIPT_URL.includes("DÁN_URL_")) {
+                showModal(
+                    "Chưa cấu hình hệ thống",
+                    "Vui lòng dán URL Google Apps Script Web App của Phú Lương vào biến SCRIPT_URL trước khi nhận phiếu.",
+                    false
+                );
+                return;
+            }
+
+            const payload = collectPayload();
+            setSubmitting(true);
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const responseText = await response.text();
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (parseError) {
+                    throw new Error("Máy chủ trả về phản hồi không hợp lệ. Vui lòng kiểm tra cấu hình Web App.");
+                }
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.message || "Không thể gửi phiếu khảo sát.");
+                }
+
+                showModal(
+                    "Gửi phiếu thành công!",
+                    result.message || `Hệ thống đã ghi nhận phiếu khảo sát số ${result.code}.`,
+                    true,
+                    result.fileUrl || ""
+                );
+                form.reset();
+            } catch (error) {
+                const message = error.message === "Failed to fetch"
+                    ? "Không thể kết nối tới hệ thống. Vui lòng kiểm tra URL Web App, quyền truy cập và kết nối mạng."
+                    : (error.message || "Không thể kết nối tới hệ thống. Vui lòng thử lại.");
+                showModal("Gửi phiếu thất bại", message, false);
+            } finally {
+                setSubmitting(false);
+            }
+        });
+    </script>
+</body>
+</html>
