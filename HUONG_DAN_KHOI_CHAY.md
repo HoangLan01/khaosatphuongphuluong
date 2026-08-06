@@ -7,7 +7,7 @@ index.html
         -> fetch JSON bằng Content-Type: text/plain;charset=utf-8
 Google Apps Script Web App
         -> Google Sheet: lưu mỗi lượt gửi thành một dòng
-        -> Google Drive: lưu một PDF cho mỗi phiếu
+        -> Google Drive: trigger nền tạo một PDF cho mỗi phiếu
 ```
 
 Người dân không cần đăng nhập Google. Không dán `SPREADSHEET_ID` hoặc `DRIVE_FOLDER_ID` vào `index.html`.
@@ -67,9 +67,10 @@ const SPREADSHEET_ID = "DÁN_ID_GOOGLE_SHEET_PHU_LUONG_Ở_ĐÂY";
 const DRIVE_FOLDER_ID = "DÁN_ID_THƯ_MỤC_DRIVE_PHU_LUONG_Ở_ĐÂY";
 ```
 
-5. Chạy thủ công `setupProject()` một lần.
+5. Chạy thủ công `setupProject()` một lần. Hàm này tạo sheet/header và tạo trigger nền `processPendingPdfs` chạy mỗi phút.
 6. Khi Google yêu cầu cấp quyền, chọn tài khoản quản lý, bấm tiếp tục qua màn hình cảnh báo ứng dụng chưa xác minh nếu đây là project nội bộ do đơn vị tự tạo.
 7. Chạy `testCreateSamplePdf()` để kiểm tra bố cục PDF. Hàm này chỉ tạo PDF mẫu, không ghi Sheet và không tăng mã phiếu.
+8. Trong `Triggers`, kiểm tra có trigger chạy hàm `processPendingPdfs` theo lịch mỗi phút.
 
 ## 5. Deploy Web App
 
@@ -118,10 +119,11 @@ Sau khi đã cấu hình Google Sheet, Drive folder, deploy Apps Script và thay
 3. Lượt đầu nhận mã `001`.
 4. Sheet `Responses` có đúng một dòng mới và đúng 16 cột theo schema.
 5. Điểm `q_1..q_9` nằm đúng cột.
-6. Drive có file `Phieu_khao_sat_Phu_Luong_001.pdf`.
-7. PDF có đủ nội dung và đúng dấu `X`.
-8. Cột `FileUrl` trỏ tới file PDF vừa tạo.
-9. Lượt thứ hai nhận mã `002`.
+6. Ngay sau khi gửi, cột `FileUrl` có trạng thái `PENDING` hoặc `PROCESSING`.
+7. Sau khi trigger nền chạy, Drive có file `Phieu_khao_sat_Phu_Luong_001.pdf`.
+8. PDF có đủ nội dung và đúng dấu `X`.
+9. Cột `FileUrl` được cập nhật thành URL file PDF vừa tạo.
+10. Lượt thứ hai nhận mã `002`.
 
 ## 9. Triển khai website tĩnh
 
@@ -143,9 +145,10 @@ Không upload `Code.gs`, manifest hoặc tài liệu chứa ID cấu hình lên 
 - Web App chưa cho phép `Anyone`: cập nhật deployment để người dân không phải đăng nhập.
 - Chưa deploy version mới sau khi sửa Apps Script: tạo deployment/version mới và dán lại URL nếu URL thay đổi.
 - Sai `SPREADSHEET_ID` hoặc `DRIVE_FOLDER_ID`: chỉ dán ID, không dán cả URL.
-- Chưa cấp quyền Sheet/Drive/Docs: chạy `setupProject()` hoặc `testCreateSamplePdf()` để kích hoạt màn hình cấp quyền.
+- Chưa cấp quyền Sheet/Drive/Docs/Triggers: chạy `setupProject()` hoặc `testCreateSamplePdf()` để kích hoạt màn hình cấp quyền.
 - Header `Responses` sai schema: Apps Script sẽ từ chối ghi để tránh lệch cột. Sửa header cho đúng hoặc tạo Sheet mới.
-- Tạo PDF thất bại: kiểm tra quyền Drive, `DRIVE_FOLDER_ID` và hạn mức Drive/Apps Script.
+- PDF vẫn ở `PENDING`: kiểm tra Apps Script `Triggers` có `processPendingPdfs` mỗi phút chưa, rồi xem `Executions`.
+- Tạo PDF thất bại: kiểm tra quyền Drive, `DRIVE_FOLDER_ID` và hạn mức Drive/Apps Script. Nếu cột `FileUrl` bắt đầu bằng `PDF_ERROR:`, mở `Executions` để xem lỗi chi tiết.
 - Mã phiếu trùng, thiếu hoặc ngoài dải: dừng nhận phiếu, sao lưu Sheet, kiểm tra cột `MaPhieu`. Không tự xóa từng dòng để sửa dãy mã.
 - Hết hạn mức Apps Script/Drive: giảm lưu lượng gửi, chờ hạn mức reset hoặc dùng tài khoản/quy trình phù hợp hơn cho đợt khảo sát lớn.
 

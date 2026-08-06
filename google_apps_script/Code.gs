@@ -1,10 +1,14 @@
 const SPREADSHEET_ID = "1mauymVAVl_yXgMwyOmb4EyKq-WdvtMIfHR6-bDwk-rE";
 const SHEET_NAME = "Responses";
-const DRIVE_FOLDER_ID = "1-ZvL59ABxHQI3R6qJKWjq8BrLq4w_SFJ?hl=vi";
+const DRIVE_FOLDER_ID = "1-ZvL59ABxHQI3R6qJKWjq8BrLq4w_SFJ";
 const START_CODE = 1;
 const END_CODE = 200;
 const CODE_WIDTH = 3;
 const TIME_ZONE = "Asia/Ho_Chi_Minh";
+const PDF_PENDING_STATUS = "PENDING";
+const PDF_PROCESSING_STATUS = "PROCESSING";
+const PDF_ERROR_PREFIX = "PDF_ERROR:";
+const PDF_BATCH_SIZE = 5;
 
 const FORM_MODEL = "Mẫu số 02";
 const WARD_NAME = "UBND phường Phú Lương";
@@ -93,7 +97,8 @@ function setupProject() {
   ensureHeaders_(sheet);
   sheet.getRange("A:A").setNumberFormat("@");
   DriveApp.getFolderById(DRIVE_FOLDER_ID).getName();
-  return "Thiết lập hoàn tất. Mã tiếp theo: " + formatCode_(getNextSurveyCode_(sheet)) + ".";
+  ensureBackgroundPdfTrigger_();
+  return "Thiết lập hoàn tất. Mã tiếp theo: " + formatCode_(getNextSurveyCode_(sheet)) + ". Trigger PDF nền đã sẵn sàng.";
 }
 
 function testCreateSamplePdf() {
@@ -121,51 +126,161 @@ function doGet() {
 }
 
 function doPost(e) {
-  const lock = LockService.getScriptLock();
-  let pdfFile = null;
-  let responseCommitted = false;
+  const startedAtMs = Date.now();
+  const timing = {
+    phase: "submit_timing"
+  };
 
   try {
+    const validateConfigStartMs = Date.now();
     validateConfiguration_();
+    timing.validateConfigurationMs = Date.now() - validateConfigStartMs;
+
+    const parseStartMs = Date.now();
     const data = parseRequest_(e);
+    timing.parseRequestMs = Date.now() - parseStartMs;
+
+    const validatePayloadStartMs = Date.now();
     validatePayload_(data);
+    timing.validatePayloadMs = Date.now() - validatePayloadStartMs;
 
+    const lock = LockService.getScriptLock();
+    const waitLockStartMs = Date.now();
     lock.waitLock(30000);
+    timing.waitLockMs = Date.now() - waitLockStartMs;
 
-    const sheet = getResponseSheet_();
-    ensureHeaders_(sheet);
-    const codeNumber = getNextSurveyCode_(sheet);
-    const code = formatCode_(codeNumber);
-    const submittedAt = new Date();
+    try {
+      const getSheetStartMs = Date.now();
+      const sheet = getResponseSheet_();
+      timing.getSheetMs = Date.now() - getSheetStartMs;
 
-    pdfFile = createSurveyPdf_(data, code, submittedAt, false);
-    appendResponse_(sheet, data, code, submittedAt, pdfFile.getUrl());
-    SpreadsheetApp.flush();
-    responseCommitted = true;
+      const ensureHeadersStartMs = Date.now();
+      ensureHeaders_(sheet);
+      timing.ensureHeadersMs = Date.now() - ensureHeadersStartMs;
 
-    return jsonResponse_({
-      success: true,
-      message: "Hệ thống đã ghi nhận phiếu khảo sát số " + code + ".",
-      code: code,
-      fileUrl: pdfFile.getUrl()
-    });
-  } catch (error) {
-    if (pdfFile && !responseCommitted) {
-      try {
-        pdfFile.setTrashed(true);
-      } catch (cleanupError) {
-        console.error("Không thể xóa PDF sau lỗi: " + cleanupError.message);
+      const getNextCodeStartMs = Date.now();
+      const codeNumber = getNextSurveyCode_(sheet);
+      timing.getNextCodeMs = Date.now() - getNextCodeStartMs;
+
+      const code = formatCode_(codeNumber);
+      const submittedAt = new Date();
+
+      // Chỉ ghi nhận dữ liệu và đánh dấu chờ PDF. Trigger nền sẽ tạo PDF sau,
+      // nên người gửi không phải chờ DocumentApp/Drive xử lý.
+      const appendStartMs = Date.now();
+      appendResponse_(sheet, data, code, submittedAt, PDF_PENDING_STATUS);
+      timing.appendResponseMs = Date.now() - appendStartMs;
+
+      const flushStartMs = Date.now();
+      SpreadsheetApp.flush();
+      timing.flushMs = Date.now() - flushStartMs;
+      timing.totalMs = Date.now() - startedAtMs;
+      timing.code = code;
+      console.log(JSON.stringify(timing));
+
+      return jsonResponse_({
+        success: true,
+        message: "Hệ thống đã ghi nhận phiếu khảo sát số " + code + ". Bản PDF sẽ được tạo tự động trong vài phút.",
+        code: code,
+        pdfStatus: "Pending"
+      });
+    } finally {
+      if (lock.hasLock()) {
+        lock.releaseLock();
       }
     }
-
+  } catch (error) {
+    timing.totalMs = Date.now() - startedAtMs;
+    timing.error = String(error && error.message ? error.message : error);
+    console.log(JSON.stringify(timing));
     console.error(error.stack || error.message || error);
     return jsonResponse_({
       success: false,
       message: getPublicErrorMessage_(error)
     });
+  }
+}
+
+function processPendingPdfs() {
+  const startedAtMs = Date.now();
+  const timing = {
+    phase: "pdf_trigger_timing"
+  };
+
+  const validateConfigStartMs = Date.now();
+  validateConfiguration_();
+  timing.validateConfigurationMs = Date.now() - validateConfigStartMs;
+
+  const getSheetStartMs = Date.now();
+  const sheet = getResponseSheet_();
+  timing.getSheetMs = Date.now() - getSheetStartMs;
+
+  const ensureHeadersStartMs = Date.now();
+  ensureHeaders_(sheet);
+  timing.ensureHeadersMs = Date.now() - ensureHeadersStartMs;
+
+  const findRowsStartMs = Date.now();
+  const pendingRows = findPendingPdfRows_(sheet, PDF_BATCH_SIZE);
+  timing.findPendingRowsMs = Date.now() - findRowsStartMs;
+  timing.pendingRowCount = pendingRows.length;
+
+  pendingRows.forEach(function (rowNumber) {
+    processPendingPdfRow_(sheet, rowNumber);
+  });
+
+  timing.totalMs = Date.now() - startedAtMs;
+  console.log(JSON.stringify(timing));
+  return "Đã xử lý " + pendingRows.length + " dòng đang chờ PDF.";
+}
+
+function processPendingPdfRow_(sheet, rowNumber) {
+  const lock = LockService.getScriptLock();
+  let payload;
+
+  lock.waitLock(30000);
+  try {
+    const rowData = sheet.getRange(rowNumber, 1, 1, HEADERS.length).getValues()[0];
+    const fileStatus = String(rowData[HEADERS.length - 1] || "").trim();
+    if (fileStatus && fileStatus !== PDF_PENDING_STATUS) {
+      return;
+    }
+
+    payload = buildPdfPayloadFromRow_(rowData);
+    sheet.getRange(rowNumber, HEADERS.length).setValue(PDF_PROCESSING_STATUS);
+    SpreadsheetApp.flush();
   } finally {
     if (lock.hasLock()) {
       lock.releaseLock();
+    }
+  }
+
+  try {
+    const file = createSurveyPdf_(payload.data, payload.code, payload.submittedAt, false);
+    lock.waitLock(30000);
+    try {
+      const currentStatus = String(sheet.getRange(rowNumber, HEADERS.length).getValue() || "").trim();
+      if (currentStatus === PDF_PROCESSING_STATUS) {
+        sheet.getRange(rowNumber, HEADERS.length).setValue(file.getUrl());
+        SpreadsheetApp.flush();
+      } else {
+        file.setTrashed(true);
+      }
+    } finally {
+      if (lock.hasLock()) {
+        lock.releaseLock();
+      }
+    }
+  } catch (error) {
+    console.error("Tạo PDF nền thất bại cho dòng " + rowNumber + ": " + (error.stack || error.message || error));
+    lock.waitLock(30000);
+    try {
+      const publicMessage = getPublicErrorMessage_(error);
+      sheet.getRange(rowNumber, HEADERS.length).setValue(PDF_ERROR_PREFIX + " " + sanitizeCell_(publicMessage));
+      SpreadsheetApp.flush();
+    } finally {
+      if (lock.hasLock()) {
+        lock.releaseLock();
+      }
     }
   }
 }
@@ -271,19 +386,42 @@ function getNextSurveyCode_(sheet) {
 }
 
 function getLastCodeFromSheet_(sheet) {
+  const startedAtMs = Date.now();
   const lastRow = sheet.getLastRow();
-  if (lastRow < 2) return null;
+  const timing = {
+    phase: "sheet_scan_timing",
+    lastRow: lastRow,
+    headerColumns: HEADERS.length
+  };
+  if (lastRow < 2) {
+    timing.totalMs = Date.now() - startedAtMs;
+    timing.dataRowCount = 0;
+    console.log(JSON.stringify(timing));
+    return null;
+  }
 
+  const getRangeStartMs = Date.now();
   const dataRows = sheet.getRange(2, 1, lastRow - 1, HEADERS.length).getValues()
     .filter(function (row) {
       return row.some(function (value) { return String(value).trim() !== ""; });
     });
-  if (!dataRows.length) return null;
+  timing.getRangeAndFilterMs = Date.now() - getRangeStartMs;
+  timing.dataRowCount = dataRows.length;
+  if (!dataRows.length) {
+    timing.totalMs = Date.now() - startedAtMs;
+    console.log(JSON.stringify(timing));
+    return null;
+  }
 
+  const validateRowsStartMs = Date.now();
   const hasRowWithoutCode = dataRows.some(function (row) {
     return String(row[0]).trim() === "";
   });
   if (hasRowWithoutCode) {
+    timing.validateRowsMs = Date.now() - validateRowsStartMs;
+    timing.totalMs = Date.now() - startedAtMs;
+    timing.error = "missing MaPhieu";
+    console.log(JSON.stringify(timing));
     throw new Error("Sheet còn dữ liệu bên dưới header nhưng có dòng thiếu MaPhieu. Vui lòng kiểm tra hoặc xóa toàn bộ dữ liệu trước khi reset.");
   }
 
@@ -295,9 +433,17 @@ function getLastCodeFromSheet_(sheet) {
   const expectedCodeCount = lastCode - START_CODE + 1;
 
   if (uniqueCodes.length !== codes.length || uniqueCodes.length !== expectedCodeCount) {
+    timing.validateRowsMs = Date.now() - validateRowsStartMs;
+    timing.totalMs = Date.now() - startedAtMs;
+    timing.error = "duplicate or gap MaPhieu";
+    console.log(JSON.stringify(timing));
     throw new Error("Cột MaPhieu đang có mã trùng hoặc bị thiếu giữa dãy. Vui lòng kiểm tra Sheet trước khi nhận thêm phiếu.");
   }
 
+  timing.validateRowsMs = Date.now() - validateRowsStartMs;
+  timing.lastCode = lastCode;
+  timing.totalMs = Date.now() - startedAtMs;
+  console.log(JSON.stringify(timing));
   return lastCode;
 }
 
@@ -314,8 +460,80 @@ function parseCode_(value) {
   return code;
 }
 
+function findPendingPdfRows_(sheet, limit) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return [];
+
+  const fileUrlValues = sheet.getRange(2, HEADERS.length, lastRow - 1, 1).getValues();
+  const rowNumbers = [];
+
+  for (let index = 0; index < fileUrlValues.length && rowNumbers.length < limit; index += 1) {
+    const value = String(fileUrlValues[index][0] || "").trim();
+    if (!value || value === PDF_PENDING_STATUS) {
+      rowNumbers.push(index + 2);
+    }
+  }
+
+  return rowNumbers;
+}
+
+function buildPdfPayloadFromRow_(rowData) {
+  const code = formatCode_(parseCode_(rowData[0]));
+  const data = {
+    linhVuc: String(rowData[2] || "").trim(),
+    gioiTinh: String(rowData[12] || "").trim(),
+    doTuoi: String(rowData[13] || "").trim(),
+    trinhDo: String(rowData[14] || "").trim()
+  };
+
+  for (let index = 1; index <= 9; index += 1) {
+    data["q_" + index] = String(rowData[index + 2] || "").trim();
+  }
+  validatePayload_(data);
+
+  return {
+    code: code,
+    submittedAt: parseSubmittedAt_(rowData[1]),
+    data: data
+  };
+}
+
+function parseSubmittedAt_(value) {
+  if (Object.prototype.toString.call(value) === "[object Date]" && !isNaN(value.getTime())) {
+    return value;
+  }
+
+  const text = String(value || "").trim();
+  const match = text.match(/^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2}):(\d{2})$/);
+  if (!match) {
+    return new Date();
+  }
+
+  return new Date(
+    Number(match[3]),
+    Number(match[2]) - 1,
+    Number(match[1]),
+    Number(match[4]),
+    Number(match[5]),
+    Number(match[6])
+  );
+}
+
 function formatCode_(code) {
   return String(code).padStart(CODE_WIDTH, "0");
+}
+
+function ensureBackgroundPdfTrigger_() {
+  const triggerExists = ScriptApp.getProjectTriggers().some(function (trigger) {
+    return trigger.getHandlerFunction() === "processPendingPdfs";
+  });
+
+  if (!triggerExists) {
+    ScriptApp.newTrigger("processPendingPdfs")
+      .timeBased()
+      .everyMinutes(1)
+      .create();
+  }
 }
 
 function createSurveyPdf_(data, code, submittedAt, isSample) {
