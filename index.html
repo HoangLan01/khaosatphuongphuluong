@@ -48,7 +48,7 @@
         .page-header {
             position: relative;
             isolation: isolate;
-            min-height: 220px;
+            min-height: 236px;
             border-radius: 20px 20px 0 0;
             overflow: hidden;
             background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
@@ -56,17 +56,58 @@
 
         .header-illustration {
             position: absolute;
-            right: -10px;
-            bottom: -18px;
-            width: min(42%, 360px);
+            right: 18px;
+            bottom: -14px;
+            width: min(38%, 340px);
             min-width: 230px;
-            opacity: 0.15;
+            opacity: 0.13;
             z-index: -1;
         }
 
         .page-header h1 {
             overflow-wrap: break-word;
             text-wrap: balance;
+        }
+
+        .header-copy {
+            max-width: 780px;
+        }
+
+        .header-unit {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #d9fffb;
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1.4;
+            text-transform: uppercase;
+        }
+
+        .header-unit::after {
+            content: "";
+            width: 3.5rem;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.46);
+        }
+
+        .header-title {
+            margin-top: 0.85rem;
+            max-width: 760px;
+            font-size: clamp(2.35rem, 5vw, 4.15rem);
+            font-weight: 800;
+            line-height: 1.04;
+            text-transform: uppercase;
+        }
+
+        .header-subtitle {
+            margin-top: 1rem;
+            max-width: 740px;
+            color: #ecfeff;
+            font-size: clamp(0.98rem, 1.6vw, 1.18rem);
+            font-weight: 600;
+            line-height: 1.65;
+            text-transform: uppercase;
         }
 
         main,
@@ -272,6 +313,25 @@
                 width: 270px;
                 right: -80px;
             }
+
+            .header-unit {
+                justify-content: center;
+            }
+
+            .header-unit::after {
+                display: none;
+            }
+
+            .header-title {
+                margin-top: 1rem;
+                font-size: 2.1rem;
+                line-height: 1.12;
+            }
+
+            .header-subtitle {
+                font-size: 0.92rem;
+                line-height: 1.65;
+            }
         }
 
         #messageModal {
@@ -290,7 +350,7 @@
                 <path d="M62 78C76 54 102 48 126 62M306 56C328 38 358 44 372 66" stroke="white" stroke-width="8" stroke-linecap="round"/>
                 <path d="M24 210C42 180 72 176 92 210M328 210C348 172 390 176 404 210" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <div class="relative z-10 flex flex-col items-center gap-6 text-center md:flex-row md:text-left">
+            <div class="relative z-10 flex min-h-[172px] flex-col items-center justify-center gap-7 text-center md:flex-row md:justify-start md:text-left">
                 <div class="flex h-28 w-28 shrink-0 items-center justify-center bg-white p-2 shadow-[0_8px_24px_rgba(15,23,42,.14)] ring-1 ring-white/60 md:h-32 md:w-32">
                     <img
                         src="assets/logo_phu_luong.jpg"
@@ -298,11 +358,10 @@
                         class="h-full w-full object-contain"
                     >
                 </div>
-                <div class="w-full max-w-4xl">
-                    <p class="text-sm font-semibold uppercase tracking-wide text-teal-50">UBND phường Phú Lương</p>
-                    <p class="mt-3 inline-flex rounded-full bg-white/15 px-4 py-1.5 text-sm font-bold uppercase text-teal-50 ring-1 ring-white/25">Mẫu số 02</p>
-                    <h1 class="mt-4 text-2xl font-extrabold uppercase leading-tight sm:text-3xl md:text-5xl">Phiếu khảo sát</h1>
-                    <p class="mt-4 max-w-3xl text-sm font-semibold uppercase leading-relaxed text-teal-50 md:text-lg">
+                <div class="header-copy w-full">
+                    <p class="header-unit">UBND phường Phú Lương</p>
+                    <h1 class="header-title">Phiếu khảo sát</h1>
+                    <p class="header-subtitle">
                         Khảo sát đo lường mức độ hài lòng đối với các phòng chuyên môn thuộc UBND phường
                     </p>
                 </div>
