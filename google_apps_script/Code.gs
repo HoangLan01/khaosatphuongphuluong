@@ -13,8 +13,8 @@ const PDF_BATCH_SIZE = 5;
 const FORM_MODEL = "Mẫu số 02";
 const WARD_NAME = "UBND phường Phú Lương";
 const SURVEY_TITLE = "MẪU PHIẾU KHẢO SÁT";
-const SURVEY_SUBTITLE = "Khảo sát đo lường mức độ hài lòng đối với các phòng chuyên môn thuộc UBND phường";
-const PLAN_LINE = "(Kèm theo Kế hoạch ...... /KH-UBND ngày ...... tháng ...... năm 2026 của UBND phường Phú Lương)";
+const SURVEY_SUBTITLE = "KHẢO SÁT ĐO LƯỜNG MỨC ĐỘ HÀI LÒNG CỦA CÁ NHÂN, TỔ CHỨC ĐỐI VỚI SỰ PHỤC VỤ HÀNH CHÍNH CỦA CÁC PHÒNG CHUYÊN MÔN THUỘC UBND PHƯỜNG PHÚ LƯƠNG NĂM 2026";
+const PLAN_LINE = "(Kèm theo Kế hoạch 354/KH-UBND ngày 06 tháng 8 năm 2026 của UBND phường Phú Lương)";
 const PURPOSE_TEXT = "Để giúp UBND phường triển khai đo lường sự hài lòng của tổ chức, cá nhân đối với sự phục vụ của các phòng chuyên môn thuộc UBND phường. Kính mong Ông (bà) cung cấp thông tin đầy đủ, chính xác, khách quan đối với việc thực hiện một số nội dung của chính quyền đối với ông (bà).";
 const INSTRUCTION_TEXT = "Xin Ông/Bà chọn một trong các chữ số 1, 2, 3, 4, 5 đối với từng nhận định; trong đó 5 = Rất hài lòng, 4 = Hài lòng, 3 = Bình thường, 2 = Không hài lòng và 1 = Rất không hài lòng.";
 
