@@ -3,14 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mẫu phiếu khảo sát - UBND phường Phú Lương</title>
+    <title>Phiếu khảo sát - UBND phường Phú Lương</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            color-scheme: light;
+            --brand: #0f766e;
+            --brand-hover: #0d9488;
+            --secondary: #14b8a6;
+            --accent: #22c55e;
+            --ink: #0f172a;
+            --muted: #475569;
+            --placeholder: #94a3b8;
+            --border: #e2e8f0;
+            --divider: #cbd5e1;
+            --section: #dff7f3;
+            --page: #f8fafc;
+            --card-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+            --card-shadow-hover: 0 12px 32px rgba(15, 23, 42, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            background: var(--page);
+            color: var(--ink);
+            font-family: "Be Vietnam Pro", Inter, Roboto, sans-serif;
+        }
+
+        .page-header {
+            position: relative;
+            isolation: isolate;
+            min-height: 220px;
+            border-radius: 20px 20px 0 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+        }
+
+        .header-illustration {
+            position: absolute;
+            right: -10px;
+            bottom: -18px;
+            width: min(42%, 360px);
+            min-width: 230px;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .page-header h1 {
+            overflow-wrap: break-word;
+            text-wrap: balance;
+        }
+
+        main,
+        form,
+        section,
+        fieldset,
+        .form-section,
+        .info-box {
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--brand);
+            font-size: 1.75rem;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .section-icon {
+            display: inline-flex;
+            width: 2.5rem;
+            height: 2.5rem;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: var(--brand);
+            box-shadow: inset 0 0 0 1px rgba(20, 184, 166, 0.22);
+        }
+
+        .section-icon svg,
+        .field-icon svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            stroke-width: 1.8;
+        }
+
+        .info-box {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-box::before {
+            content: "";
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 4px;
+            background: currentColor;
+            opacity: 0.32;
+        }
+
+        .form-section {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .form-section:hover {
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .rating-scale-card,
+        .fieldset-card,
+        .input-card {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: #ffffff;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .rating-scale-card {
+            min-height: 110px;
+        }
+
+        .rating-scale-card:hover,
+        .fieldset-card:hover,
+        .input-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(20, 184, 166, 0.45);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .fieldset-card > legend {
+            float: left;
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0;
+        }
+
+        .fieldset-card > div {
+            clear: both;
+        }
+
         input[type="radio"] {
-            width: 1.35rem;
-            height: 1.35rem;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
             accent-color: #0f766e;
+            transition: transform 0.25s ease;
+        }
+
+        input[type="radio"]:hover {
+            transform: scale(1.08);
+        }
+
+        input[type="text"] {
+            min-height: 48px;
         }
 
         input[type="radio"]:focus-visible,
@@ -20,73 +189,164 @@
             outline-offset: 3px;
         }
 
-        .survey-table tbody tr.question-row:nth-of-type(even) {
+        .fieldset-card label,
+        .choice-label {
+            min-height: 44px;
+            border-radius: 12px;
+            transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+        }
+
+        .fieldset-card label:hover,
+        .choice-label:hover {
             background-color: #f8fafc;
+            box-shadow: inset 0 0 0 1px rgba(20, 184, 166, 0.22);
+        }
+
+        .survey-table tbody tr.question-row:nth-of-type(even) {
+            background-color: #ffffff;
         }
 
         .survey-table tbody tr.question-row:hover {
-            background-color: #f0fdfa;
+            background-color: #f8fafc;
+        }
+
+        .survey-table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: #ffffff;
+        }
+
+        .survey-section-row {
+            background: var(--section);
+        }
+
+        .survey-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            box-shadow: inset 0 -1px 0 #edf2f7;
+        }
+
+        .survey-table tbody tr.question-row td:first-child {
+            border-left: 4px solid transparent;
+        }
+
+        .survey-table tbody tr.question-row:hover td:first-child {
+            border-left-color: #14b8a6;
+        }
+
+        .survey-table th,
+        .survey-table td {
+            vertical-align: middle;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .primary-button {
+            min-height: 52px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #0f766e, #0d9488);
+            box-shadow: 0 8px 24px rgba(13, 148, 136, 0.25);
+            font-weight: 600;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            filter: brightness(1.05);
+            box-shadow: 0 12px 32px rgba(13, 148, 136, 0.32);
+        }
+
+        @media (max-width: 640px) {
+            .section-title {
+                align-items: flex-start;
+                font-size: 1.35rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.75rem;
+                line-height: 1.18;
+            }
+
+            .header-illustration {
+                width: 270px;
+                right: -80px;
+            }
+        }
+
+        #messageModal {
+            backdrop-filter: blur(4px);
         }
     </style>
 </head>
-<body class="bg-slate-100 p-3 font-sans text-slate-900 md:p-8">
-    <main class="mx-auto max-w-6xl overflow-hidden rounded-lg bg-white shadow-xl">
-        <header class="bg-teal-800 px-5 py-7 text-white md:px-10">
-            <div class="flex flex-col items-center gap-5 text-center md:flex-row md:text-left">
-                <div class="flex h-28 w-28 shrink-0 items-center justify-center rounded bg-white p-2 shadow-lg md:h-32 md:w-32">
+<body class="p-4 font-sans text-slate-900 antialiased md:p-6 lg:p-10">
+    <main class="relative z-10 mx-auto max-w-[1200px] overflow-hidden rounded-[20px] bg-white">
+        <header class="page-header px-5 py-8 text-white md:px-10">
+            <svg class="header-illustration" viewBox="0 0 420 260" fill="none" aria-hidden="true">
+                <path d="M40 210H380" stroke="white" stroke-width="10" stroke-linecap="round"/>
+                <path d="M95 210V112H325V210" stroke="white" stroke-width="10" stroke-linejoin="round"/>
+                <path d="M72 112H348L210 42L72 112Z" stroke="white" stroke-width="10" stroke-linejoin="round"/>
+                <path d="M132 210V142M184 210V142M236 210V142M288 210V142" stroke="white" stroke-width="10" stroke-linecap="round"/>
+                <path d="M62 78C76 54 102 48 126 62M306 56C328 38 358 44 372 66" stroke="white" stroke-width="8" stroke-linecap="round"/>
+                <path d="M24 210C42 180 72 176 92 210M328 210C348 172 390 176 404 210" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="relative z-10 flex flex-col items-center gap-6 text-center md:flex-row md:text-left">
+                <div class="flex h-28 w-28 shrink-0 items-center justify-center bg-white p-2 shadow-[0_8px_24px_rgba(15,23,42,.14)] ring-1 ring-white/60 md:h-32 md:w-32">
                     <img
                         src="assets/logo_phu_luong.jpg"
                         alt="Logo phường Phú Lương"
                         class="h-full w-full object-contain"
                     >
                 </div>
-                <div class="max-w-4xl">
+                <div class="w-full max-w-4xl">
                     <p class="text-sm font-semibold uppercase tracking-wide text-teal-50">UBND phường Phú Lương</p>
-                    <p class="mt-2 text-sm font-bold uppercase text-teal-100">Mẫu số 02</p>
-                    <h1 class="mt-2 text-2xl font-extrabold uppercase leading-tight md:text-4xl">Mẫu phiếu khảo sát</h1>
-                    <p class="mt-3 text-sm font-semibold uppercase leading-relaxed text-teal-50 md:text-base">
+                    <p class="mt-3 inline-flex rounded-full bg-white/15 px-4 py-1.5 text-sm font-bold uppercase text-teal-50 ring-1 ring-white/25">Mẫu số 02</p>
+                    <h1 class="mt-4 text-2xl font-extrabold uppercase leading-tight sm:text-3xl md:text-5xl">Phiếu khảo sát</h1>
+                    <p class="mt-4 max-w-3xl text-sm font-semibold uppercase leading-relaxed text-teal-50 md:text-lg">
                         Khảo sát đo lường mức độ hài lòng đối với các phòng chuyên môn thuộc UBND phường
-                    </p>
-                    <p class="mt-2 text-sm italic leading-relaxed text-teal-50">
-                        (Kèm theo Kế hoạch ...... /KH-UBND ngày ...... tháng ...... năm 2026 của UBND phường Phú Lương)
                     </p>
                 </div>
             </div>
         </header>
 
-        <form id="surveyForm" class="p-5 md:p-10">
-            <section class="mb-10 border-b border-slate-200 pb-8">
-                <h2 class="mb-5 text-xl font-extrabold text-teal-800 md:text-2xl">I. THÔNG TIN CHUNG</h2>
+        <form id="surveyForm" class="space-y-10 bg-slate-50 p-4 md:p-6 lg:p-10">
+            <section class="form-section p-5 md:p-8">
+                <h2 class="section-title mb-6">
+                    <span class="section-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7h.01"/></svg>
+                    </span>
+                    I. THÔNG TIN CHUNG
+                </h2>
 
-                <div class="mb-6 rounded-lg border border-teal-200 bg-teal-50 p-5 text-sm leading-relaxed md:text-base">
+                <div class="info-box mb-6 rounded-[16px] border border-teal-100 bg-teal-50 p-5 pl-6 text-sm leading-relaxed text-slate-700 md:text-base">
                     <h3 class="mb-2 font-bold text-teal-900">1. Mục đích khảo sát</h3>
                     <p class="text-justify">
                         Để giúp UBND phường triển khai đo lường sự hài lòng của tổ chức, cá nhân đối với sự phục vụ của các phòng chuyên môn thuộc UBND phường. Kính mong Ông (bà) cung cấp thông tin đầy đủ, chính xác, khách quan đối với việc thực hiện một số nội dung của chính quyền đối với ông (bà).
                     </p>
                 </div>
 
-                <div class="mb-6 rounded-lg border border-cyan-200 bg-cyan-50 p-5 text-sm leading-relaxed md:text-base">
-                    <h3 class="mb-2 font-bold text-cyan-900">2. Hướng dẫn trả lời</h3>
+                <div class="info-box mb-6 rounded-[16px] border border-teal-100 bg-teal-50 p-5 pl-6 text-sm leading-relaxed text-slate-700 md:text-base">
+                    <h3 class="mb-2 font-bold text-teal-900">2. Hướng dẫn trả lời</h3>
                     <p class="text-justify">
                         Xin Ông/Bà chọn một trong các chữ số <strong>1, 2, 3, 4, 5</strong> đối với từng nhận định; trong đó <strong>5 = Rất hài lòng, 4 = Hài lòng, 3 = Bình thường, 2 = Không hài lòng và 1 = Rất không hài lòng</strong>.
                     </p>
-                    <div class="mt-4 grid grid-cols-1 gap-2 text-sm md:grid-cols-5">
-                        <div class="rounded border border-teal-200 bg-white p-2 text-center"><strong>5</strong><br>Rất hài lòng</div>
-                        <div class="rounded border border-teal-200 bg-white p-2 text-center"><strong>4</strong><br>Hài lòng</div>
-                        <div class="rounded border border-teal-200 bg-white p-2 text-center"><strong>3</strong><br>Bình thường</div>
-                        <div class="rounded border border-teal-200 bg-white p-2 text-center"><strong>2</strong><br>Không hài lòng</div>
-                        <div class="rounded border border-teal-200 bg-white p-2 text-center"><strong>1</strong><br>Rất không hài lòng</div>
+                    <div class="mt-5 grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 lg:grid-cols-5">
+                        <div class="rating-scale-card flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-2xl" aria-hidden="true">😊</span><strong class="text-2xl text-teal-700">5</strong><span>Rất hài lòng</span></div>
+                        <div class="rating-scale-card flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-2xl" aria-hidden="true">🙂</span><strong class="text-2xl text-teal-700">4</strong><span>Hài lòng</span></div>
+                        <div class="rating-scale-card flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-2xl" aria-hidden="true">😐</span><strong class="text-2xl text-teal-700">3</strong><span>Bình thường</span></div>
+                        <div class="rating-scale-card flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-2xl" aria-hidden="true">🙁</span><strong class="text-2xl text-teal-700">2</strong><span>Không hài lòng</span></div>
+                        <div class="rating-scale-card flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-2xl" aria-hidden="true">😡</span><strong class="text-2xl text-teal-700">1</strong><span>Rất không hài lòng</span></div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 gap-5 md:grid-cols-[1fr_2fr]">
-                    <div class="rounded-lg border border-amber-200 bg-amber-50 p-4">
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-[1fr_2fr]">
+                    <div class="info-box rounded-[16px] border border-amber-200 bg-amber-50 p-5 pl-6 text-amber-800">
                         <p class="font-semibold text-amber-900">Mã số phiếu</p>
                         <p class="mt-1 text-sm leading-relaxed text-amber-800">
                             Người dân không cần nhập mã. Hệ thống tự động cấp mã từ 001 đến 200 sau khi gửi phiếu thành công.
                         </p>
                     </div>
-                    <div>
+                    <div class="input-card p-5">
                         <label class="mb-2 block font-semibold" for="linhVuc">
                             Lĩnh vực/thủ tục hành chính đã giải quyết <span class="text-red-600">*</span>
                         </label>
@@ -96,60 +356,70 @@
                             name="linhVuc"
                             required
                             maxlength="500"
-                            class="w-full rounded-lg border-2 border-slate-300 p-3 transition focus:border-teal-700"
+                            class="w-full rounded-[12px] border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm transition placeholder:text-slate-400 hover:border-teal-400 focus:border-teal-700 focus:ring-4 focus:ring-teal-100"
                             placeholder="Nhập lĩnh vực hoặc thủ tục hành chính đã giải quyết"
                         >
                     </div>
                 </div>
             </section>
 
-            <section class="mb-10 border-b border-slate-200 pb-8">
-                <h2 class="mb-5 text-xl font-extrabold text-teal-800 md:text-2xl">II. NỘI DUNG KHẢO SÁT</h2>
+            <section class="form-section p-5 md:p-8">
+                <h2 class="section-title mb-6">
+                    <span class="section-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 5h6"/><path d="M9 3h6v4H9z"/><path d="M6 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1"/><path d="M8 13h.01"/><path d="M11 13h5"/><path d="M8 17h.01"/><path d="M11 17h5"/></svg>
+                    </span>
+                    II. NỘI DUNG KHẢO SÁT
+                </h2>
                 <div id="ratingSurvey"></div>
             </section>
 
-            <section class="mb-8">
-                <h2 class="mb-5 text-xl font-extrabold text-teal-800 md:text-2xl">THÔNG TIN NGƯỜI TRẢ LỜI</h2>
-                <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-                    <fieldset class="rounded-lg border border-slate-200 bg-slate-50 p-5">
-                        <legend class="translate-y-3 px-1 font-bold text-slate-800">Giới tính <span class="text-red-600">*</span></legend>
-                        <div class="mt-5 space-y-3">
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="gioiTinh" value="Nam" required><span>1. Nam</span></label>
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="gioiTinh" value="Nữ"><span>2. Nữ</span></label>
+            <section class="form-section p-5 md:p-8">
+                <h2 class="section-title mb-6">
+                    <span class="section-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 21a7 7 0 0 0-14 0"/><circle cx="12" cy="8" r="4"/></svg>
+                    </span>
+                    THÔNG TIN NGƯỜI TRẢ LỜI
+                </h2>
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <fieldset class="fieldset-card px-6 pb-6 pt-6">
+                        <legend class="font-bold text-slate-800">Giới tính <span class="text-red-600">*</span></legend>
+                        <div class="space-y-3">
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="gioiTinh" value="Nam" required><span>1. Nam</span></label>
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="gioiTinh" value="Nữ"><span>2. Nữ</span></label>
                         </div>
                     </fieldset>
 
-                    <fieldset class="rounded-lg border border-slate-200 bg-slate-50 p-5">
-                        <legend class="translate-y-3 px-1 font-bold text-slate-800">Độ tuổi <span class="text-red-600">*</span></legend>
-                        <div class="mt-5 space-y-3">
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="doTuoi" value="Từ 18 - 24 tuổi" required><span>1. Từ 18 - 24 tuổi</span></label>
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="doTuoi" value="Từ 25-34 tuổi"><span>2. Từ 25-34 tuổi</span></label>
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="doTuoi" value="Từ 35-49 tuổi"><span>3. Từ 35-49 tuổi</span></label>
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="doTuoi" value="Từ 50-60 tuổi"><span>4. Từ 50-60 tuổi</span></label>
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="doTuoi" value="Trên 60 tuổi"><span>5. Trên 60 tuổi</span></label>
+                    <fieldset class="fieldset-card px-6 pb-6 pt-6">
+                        <legend class="font-bold text-slate-800">Độ tuổi <span class="text-red-600">*</span></legend>
+                        <div class="space-y-3">
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="doTuoi" value="Từ 18 - 24 tuổi" required><span>1. Từ 18 - 24 tuổi</span></label>
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="doTuoi" value="Từ 25-34 tuổi"><span>2. Từ 25-34 tuổi</span></label>
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="doTuoi" value="Từ 35-49 tuổi"><span>3. Từ 35-49 tuổi</span></label>
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="doTuoi" value="Từ 50-60 tuổi"><span>4. Từ 50-60 tuổi</span></label>
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="doTuoi" value="Trên 60 tuổi"><span>5. Trên 60 tuổi</span></label>
                         </div>
                     </fieldset>
 
-                    <fieldset class="rounded-lg border border-slate-200 bg-slate-50 p-5 md:col-span-2 lg:col-span-1">
-                        <legend class="translate-y-3 px-1 font-bold text-slate-800">Trình độ <span class="text-red-600">*</span></legend>
-                        <div class="mt-5 space-y-3">
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Tiểu học" required><span>1. Tiểu học</span></label>
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Trung học cơ sở (Cấp II)"><span>2. Trung học cơ sở (Cấp II)</span></label>
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Trung học phổ thông (Cấp 3)"><span>3. Trung học phổ thông (Cấp 3)</span></label>
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Đại học"><span>4. Đại học</span></label>
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Dạy nghề, Trung cấp, Cao đẳng"><span>5. Dạy nghề, Trung cấp, Cao đẳng</span></label>
-                            <label class="flex cursor-pointer items-center gap-3"><input type="radio" name="trinhDo" value="Sau Đại học"><span>6. Sau Đại học</span></label>
+                    <fieldset class="fieldset-card px-6 pb-6 pt-6 md:col-span-2 lg:col-span-1">
+                        <legend class="font-bold text-slate-800">Trình độ <span class="text-red-600">*</span></legend>
+                        <div class="space-y-3">
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Tiểu học" required><span>1. Tiểu học</span></label>
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Trung học cơ sở (Cấp II)"><span>2. Trung học cơ sở (Cấp II)</span></label>
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Trung học phổ thông (Cấp 3)"><span>3. Trung học phổ thông (Cấp 3)</span></label>
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Đại học"><span>4. Đại học</span></label>
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Dạy nghề, Trung cấp, Cao đẳng"><span>5. Dạy nghề, Trung cấp, Cao đẳng</span></label>
+                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Sau Đại học"><span>6. Sau Đại học</span></label>
                         </div>
                     </fieldset>
                 </div>
-                <p class="mt-8 text-center text-lg font-bold text-teal-800">Trân trọng cảm ơn ông/bà!</p>
+                <p class="mt-8 rounded-[16px] bg-teal-50 px-4 py-4 text-center text-lg font-bold text-teal-800 ring-1 ring-teal-100">Trân trọng cảm ơn ông/bà!</p>
             </section>
 
-            <div class="mt-10 text-center">
+            <div class="text-center">
                 <button
                     type="submit"
                     id="submitButton"
-                    class="rounded-lg bg-teal-700 px-8 py-3 font-bold text-white shadow-lg transition hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60"
+                    class="primary-button w-full max-w-sm px-8 py-3 text-white disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:scale-100"
                 >
                     Gửi phiếu khảo sát
                 </button>
@@ -157,8 +427,8 @@
         </form>
     </main>
 
-    <div id="messageModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
-        <div class="w-full max-w-md rounded-lg bg-white p-7 text-center shadow-2xl">
+    <div id="messageModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/55 p-4">
+        <div class="w-full max-w-md rounded-lg bg-white p-7 text-center shadow-2xl ring-1 ring-slate-900/10">
             <div id="modalIcon" class="mb-4 text-5xl font-bold"></div>
             <h2 id="modalTitle" class="mb-2 text-2xl font-bold text-slate-800">Thông báo</h2>
             <p id="modalMessage" class="mb-5 text-slate-700"></p>
@@ -211,7 +481,7 @@
 
         function tableHeader() {
             return `
-                <thead class="bg-slate-100 text-center">
+                <thead class="bg-slate-50 text-center">
                     <tr>
                         <th scope="col" class="w-1/2 min-w-72 px-4 py-4 text-left text-sm font-bold text-slate-900">Nhận định</th>
                         ${ratingOptions.map(option => `
@@ -227,11 +497,11 @@
 
         function questionRow(question, inputName) {
             return `
-                <tr class="question-row border-t border-slate-200">
-                    <td class="px-4 py-3 text-sm leading-relaxed text-slate-900">${question}</td>
+                <tr class="question-row">
+                    <td class="px-4 py-4 text-sm leading-relaxed text-slate-900">${question}</td>
                     ${ratingOptions.map((option, index) => `
                         <td class="px-2 py-3 text-center">
-                            <label class="inline-flex cursor-pointer items-center justify-center p-2" aria-label="${question} - ${option.value} ${option.label}">
+                            <label class="choice-label inline-flex cursor-pointer items-center justify-center p-2" aria-label="${question} - ${option.value} ${option.label}">
                                 <input type="radio" name="${inputName}" value="${option.value}" ${index === 0 ? "required" : ""}>
                             </label>
                         </td>
@@ -242,8 +512,8 @@
 
         function surveyTable(body) {
             return `
-                <div class="overflow-x-auto rounded-lg border border-slate-200 shadow-sm">
-                    <table class="survey-table min-w-[760px] divide-y divide-slate-200">
+                <div class="survey-table-wrap">
+                    <table class="survey-table min-w-[760px]">
                         ${tableHeader()}
                         <tbody class="bg-white">${body}</tbody>
                     </table>
@@ -254,7 +524,7 @@
         let questionIndex = 1;
         const ratingBody = surveySections.map(section => {
             const sectionRow = `
-                <tr class="border-t border-teal-200 bg-teal-100">
+                <tr class="survey-section-row">
                     <th colspan="6" class="px-4 py-3 text-left text-sm font-extrabold text-teal-900">${section.title}</th>
                 </tr>
             `;
