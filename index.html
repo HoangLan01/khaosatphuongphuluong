@@ -143,8 +143,16 @@
             font-weight: 600;
             line-height: 1.6;
             text-transform: uppercase;
-            letter-spacing: 0.02em;
             text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header-logo-wrapper {
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .header-logo-wrapper:hover {
+            transform: translateY(-3px) scale(1.06);
+            box-shadow: 0 18px 45px rgba(13, 148, 136, 0.4), 0 0 25px rgba(255, 255, 255, 0.5);
         }
 
         main,
@@ -699,11 +707,11 @@
                 <path d="M24 210C42 180 72 176 92 210M328 210C348 172 390 176 404 210" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <div class="relative z-10 flex min-h-[172px] flex-col items-center justify-center gap-8 text-center md:flex-row md:justify-start md:text-left">
-                <div class="flex h-28 w-28 shrink-0 items-center justify-center bg-white/95 p-2 rounded-[20px] shadow-[0_12px_32px_rgba(15,23,42,0.15)] border border-white/60 md:h-32 md:w-32">
+                <div class="header-logo-wrapper relative flex h-32 w-32 shrink-0 items-center justify-center rounded-full bg-white p-1.5 shadow-[0_12px_32px_rgba(15,23,42,0.22)] border-2 border-white/90 ring-4 ring-white/30 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:shadow-[0_16px_40px_rgba(13,148,136,0.35)] md:h-36 md:w-36">
                     <img
-                        src="assets/logo_phu_luong.jpg"
+                        src="assets/logo.png"
                         alt="Logo phường Phú Lương"
-                        class="h-full w-full object-contain rounded-[14px]"
+                        class="h-full w-full object-contain rounded-full drop-shadow-sm"
                     >
                 </div>
                 <div class="header-copy w-full">
