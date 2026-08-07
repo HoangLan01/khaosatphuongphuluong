@@ -13,6 +13,7 @@
             color-scheme: light;
             --brand: #0f766e;
             --brand-hover: #0d9488;
+            --brand-light: #f0fdfa;
             --secondary: #14b8a6;
             --accent: #22c55e;
             --ink: #0f172a;
@@ -20,10 +21,10 @@
             --placeholder: #94a3b8;
             --border: #e2e8f0;
             --divider: #cbd5e1;
-            --section: #dff7f3;
+            --section: #ccfbf1;
             --page: #f8fafc;
-            --card-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-            --card-shadow-hover: 0 12px 32px rgba(15, 23, 42, 0.12);
+            --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.04), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+            --card-shadow-hover: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 10px 10px -5px rgba(15, 23, 42, 0.06);
         }
 
         * {
@@ -40,28 +41,55 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
-            background: var(--page);
+            background: #f8fafc;
             color: var(--ink);
             font-family: "Be Vietnam Pro", Inter, Roboto, sans-serif;
+        }
+
+        /* Ambient background blobs styling */
+        @keyframes blob-bounce {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(20px, -20px) scale(1.08); }
+        }
+        .bg-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.45;
+            animation: blob-bounce 12s infinite alternate ease-in-out;
+        }
+        .bg-blob-1 { top: -10%; left: -10%; width: 45vw; height: 45vw; background: radial-gradient(circle, rgba(204,251,241,0.8) 0%, rgba(20,184,166,0.2) 100%); }
+        .bg-blob-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(14,165,233,0.15) 0%, rgba(99,102,241,0.05) 100%); animation-delay: -4s; }
+        .bg-blob-3 { top: 40%; left: 20%; width: 35vw; height: 35vw; background: radial-gradient(circle, rgba(240,253,244,0.7) 0%, rgba(34,197,94,0.1) 100%); animation-delay: -8s; }
+
+        .glass-container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.08);
         }
 
         .page-header {
             position: relative;
             isolation: isolate;
-            min-height: 236px;
+            min-height: 240px;
             border-radius: 20px 20px 0 0;
             overflow: hidden;
-            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 60%, #115e59 100%);
+            box-shadow: inset 0 -8px 32px rgba(0, 0, 0, 0.08);
         }
 
         .header-illustration {
             position: absolute;
-            right: 18px;
-            bottom: -14px;
-            width: min(38%, 340px);
-            min-width: 230px;
-            opacity: 0.13;
+            right: 24px;
+            bottom: -10px;
+            width: min(35%, 320px);
+            min-width: 210px;
+            opacity: 0.15;
             z-index: -1;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
         }
 
         .page-header h1 {
@@ -78,36 +106,45 @@
             align-items: center;
             gap: 0.75rem;
             color: #d9fffb;
-            font-size: 0.95rem;
-            font-weight: 700;
+            font-size: 0.9rem;
+            font-weight: 800;
             line-height: 1.4;
             text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .header-unit::after {
             content: "";
-            width: 3.5rem;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.46);
+            width: 3rem;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), transparent);
         }
 
         .header-title {
-            margin-top: 0.85rem;
+            margin-top: 0.75rem;
             max-width: 760px;
-            font-size: clamp(2.35rem, 5vw, 4.15rem);
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
             font-weight: 800;
-            line-height: 1.04;
+            line-height: 1.08;
             text-transform: uppercase;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to bottom, #ffffff, #e6fffa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(15, 23, 42, 0.15));
         }
 
         .header-subtitle {
-            margin-top: 1rem;
+            margin-top: 0.85rem;
             max-width: 740px;
-            color: #ecfeff;
-            font-size: clamp(0.98rem, 1.6vw, 1.18rem);
+            color: #ccfbf1;
+            font-size: clamp(0.95rem, 1.5vw, 1.15rem);
             font-weight: 600;
-            line-height: 1.65;
+            line-height: 1.6;
             text-transform: uppercase;
+            letter-spacing: 0.02em;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         main,
@@ -123,100 +160,192 @@
         .section-title {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            color: var(--brand);
-            font-size: 1.75rem;
-            font-weight: 700;
+            gap: 0.875rem;
+            color: #0f766e;
+            font-size: 1.65rem;
+            font-weight: 800;
             line-height: 1.25;
+            letter-spacing: -0.01em;
         }
 
         .section-icon {
             display: inline-flex;
-            width: 2.5rem;
-            height: 2.5rem;
+            width: 2.75rem;
+            height: 2.75rem;
             flex: 0 0 auto;
             align-items: center;
             justify-content: center;
-            border-radius: 999px;
-            background: #ecfdf5;
-            color: var(--brand);
-            box-shadow: inset 0 0 0 1px rgba(20, 184, 166, 0.22);
+            border-radius: 14px;
+            background: #f0fdfa;
+            color: #0d9488;
+            box-shadow: inset 0 0 0 1.5px rgba(20, 184, 166, 0.15), 0 4px 10px rgba(20, 184, 166, 0.05);
         }
 
         .section-icon svg,
         .field-icon svg {
-            width: 1.25rem;
-            height: 1.25rem;
-            stroke-width: 1.8;
+            width: 1.35rem;
+            height: 1.35rem;
+            stroke-width: 2;
         }
 
         .info-box {
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.02), 0 2px 4px -1px rgba(15, 23, 42, 0.01);
         }
 
         .info-box::before {
             content: "";
             position: absolute;
             inset: 0 auto 0 0;
-            width: 4px;
+            width: 5px;
             background: currentColor;
-            opacity: 0.32;
+            opacity: 0.8;
+            border-radius: 4px 0 0 4px;
         }
 
         .form-section {
-            background: #ffffff;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 24px;
             box-shadow: var(--card-shadow);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
         .form-section:hover {
             box-shadow: var(--card-shadow-hover);
+            border-color: rgba(20, 184, 166, 0.2);
+            transform: translateY(-2px);
         }
 
-        .rating-scale-card,
-        .fieldset-card,
         .input-card {
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 20px;
             background: #ffffff;
-            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+        }
+        
+        .input-card:hover {
+            border-color: rgba(20, 184, 166, 0.3);
+            box-shadow: 0 10px 20px -10px rgba(15, 23, 42, 0.06);
+            transform: translateY(-1px);
         }
 
         .rating-scale-card {
             min-height: 110px;
+            border-radius: 16px;
+            background: #ffffff;
+            border: 1.5px solid var(--border);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .rating-scale-card:hover,
-        .fieldset-card:hover,
-        .input-card:hover {
+        .rating-scale-card-5 { border-color: rgba(34, 197, 94, 0.2); background: rgba(240, 253, 244, 0.6); }
+        .rating-scale-card-5:hover { border-color: rgba(34, 197, 94, 0.5); background: rgba(240, 253, 244, 1); box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.1); transform: translateY(-3px); }
+        
+        .rating-scale-card-4 { border-color: rgba(14, 165, 233, 0.2); background: rgba(240, 249, 255, 0.6); }
+        .rating-scale-card-4:hover { border-color: rgba(14, 165, 233, 0.5); background: rgba(240, 249, 255, 1); box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.1); transform: translateY(-3px); }
+        
+        .rating-scale-card-3 { border-color: rgba(245, 158, 11, 0.2); background: rgba(254, 243, 199, 0.6); }
+        .rating-scale-card-3:hover { border-color: rgba(245, 158, 11, 0.5); background: rgba(254, 243, 199, 1); box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.1); transform: translateY(-3px); }
+        
+        .rating-scale-card-2 { border-color: rgba(249, 115, 22, 0.2); background: rgba(255, 247, 237, 0.6); }
+        .rating-scale-card-2:hover { border-color: rgba(249, 115, 22, 0.5); background: rgba(255, 247, 237, 1); box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.1); transform: translateY(-3px); }
+        
+        .rating-scale-card-1 { border-color: rgba(239, 68, 68, 0.2); background: rgba(254, 242, 242, 0.6); }
+        .rating-scale-card-1:hover { border-color: rgba(239, 68, 68, 0.5); background: rgba(254, 242, 242, 1); box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.1); transform: translateY(-3px); }
+
+        .fieldset-card {
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+        }
+
+        .fieldset-card:hover {
+            border-color: rgba(20, 184, 166, 0.25);
+            box-shadow: 0 10px 20px -10px rgba(15, 23, 42, 0.06);
             transform: translateY(-2px);
-            border-color: rgba(20, 184, 166, 0.45);
-            box-shadow: var(--card-shadow-hover);
         }
 
         .fieldset-card > legend {
             float: left;
             width: 100%;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
             padding: 0;
+            font-size: 1.05rem;
         }
 
         .fieldset-card > div {
             clear: both;
         }
 
-        input[type="radio"] {
-            width: 22px;
-            height: 22px;
+        /* Beautiful interactive option pills inside fieldsets */
+        .fieldset-card label {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.85rem 1.15rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            background-color: #ffffff;
             cursor: pointer;
-            accent-color: #0f766e;
-            transition: transform 0.25s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 48px;
+        }
+        
+        .fieldset-card label:hover {
+            background-color: #f0fdfa;
+            border-color: #99f6e4;
+            transform: translateY(-1px);
+        }
+        
+        .fieldset-card label:has(input[type="radio"]:checked) {
+            background-color: #f0fdfa;
+            border-color: #0d9488;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.08);
         }
 
-        input[type="radio"]:hover {
-            transform: scale(1.08);
+        /* Custom radio buttons in fieldsets */
+        .fieldset-card input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            outline: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+        .fieldset-card input[type="radio"]::after {
+            content: "";
+            width: 0.55rem;
+            height: 0.55rem;
+            border-radius: 50%;
+            background-color: #fff;
+            transform: scale(0);
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fieldset-card input[type="radio"]:checked {
+            background-color: #0d9488;
+            border-color: #0d9488;
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
+        }
+
+        .fieldset-card input[type="radio"]:checked::after {
+            transform: scale(1);
         }
 
         input[type="text"] {
@@ -230,51 +359,57 @@
             outline-offset: 3px;
         }
 
-        .fieldset-card label,
-        .choice-label {
-            min-height: 44px;
-            border-radius: 12px;
-            transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-        }
-
-        .fieldset-card label:hover,
-        .choice-label:hover {
-            background-color: #f8fafc;
-            box-shadow: inset 0 0 0 1px rgba(20, 184, 166, 0.22);
-        }
-
-        .survey-table tbody tr.question-row:nth-of-type(even) {
-            background-color: #ffffff;
-        }
-
-        .survey-table tbody tr.question-row:hover {
-            background-color: #f8fafc;
-        }
-
+        /* Dynamic Survey Table custom styles */
         .survey-table-wrap {
             overflow-x: auto;
             border: 1px solid var(--border);
             border-radius: 20px;
             background: #ffffff;
+            box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.02);
         }
 
-        .survey-section-row {
-            background: var(--section);
+        .survey-table {
+            border-collapse: separate;
+            border-spacing: 0;
         }
 
         .survey-table thead th {
             position: sticky;
             top: 0;
-            z-index: 1;
+            z-index: 10;
+            background: #f8fafc;
+            border-bottom: 2px solid #edf2f7;
             box-shadow: inset 0 -1px 0 #edf2f7;
+        }
+
+        .survey-section-row {
+            background: #f0fdfa !important;
+        }
+
+        .survey-section-row th {
+            border-bottom: 1.5px solid #ccfbf1;
+            letter-spacing: 0.02em;
+        }
+
+        .survey-table tbody tr.question-row {
+            transition: background-color 0.2s ease;
+        }
+
+        .survey-table tbody tr.question-row:nth-of-type(even) {
+            background-color: #fafbfc;
+        }
+
+        .survey-table tbody tr.question-row:hover {
+            background-color: #f0fdfa;
         }
 
         .survey-table tbody tr.question-row td:first-child {
             border-left: 4px solid transparent;
+            transition: border-color 0.2s ease;
         }
 
         .survey-table tbody tr.question-row:hover td:first-child {
-            border-left-color: #14b8a6;
+            border-left-color: #0d9488;
         }
 
         .survey-table th,
@@ -283,35 +418,120 @@
             border-bottom: 1px solid #edf2f7;
         }
 
+        /* Custom radio selector pill in table */
+        .choice-label {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            padding: 0.5rem 0;
+        }
+
+        .custom-radio-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            background: #ffffff;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .choice-label:hover .custom-radio-btn {
+            border-color: #99f6e4;
+            color: #0f766e;
+            background: #f0fdfa;
+            transform: scale(1.1);
+        }
+
+        input:checked + .custom-radio-btn {
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transform: scale(1.15);
+        }
+
+        /* Value based branding for selected radios */
+        input[value="5"]:checked + .custom-radio-btn { background: #22c55e; border-color: #22c55e; box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2); }
+        input[value="4"]:checked + .custom-radio-btn { background: #0d9488; border-color: #0d9488; box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.2); }
+        input[value="3"]:checked + .custom-radio-btn { background: #eab308; border-color: #eab308; box-shadow: 0 0 0 4px rgba(234, 179, 8, 0.2); }
+        input[value="2"]:checked + .custom-radio-btn { background: #f97316; border-color: #f97316; box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2); }
+        input[value="1"]:checked + .custom-radio-btn { background: #ef4444; border-color: #ef4444; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2); }
+
+        /* Premium button styling with hover arrow effect */
         .primary-button {
             min-height: 52px;
             border-radius: 999px;
             background: linear-gradient(135deg, #0f766e, #0d9488);
             box-shadow: 0 8px 24px rgba(13, 148, 136, 0.25);
-            font-weight: 600;
-            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .primary-button:hover {
+        .primary-button::after {
+            content: "→";
+            font-size: 1.2rem;
+            line-height: 1;
+            transition: transform 0.25s ease;
+        }
+
+        .primary-button:hover:not(:disabled) {
             transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(13, 148, 136, 0.35);
             filter: brightness(1.05);
-            box-shadow: 0 12px 32px rgba(13, 148, 136, 0.32);
         }
 
-        @media (max-width: 640px) {
+        .primary-button:hover:not(:disabled)::after {
+            transform: translateX(5px);
+        }
+
+        /* Success & Error modal glassmorphism styling */
+        #messageModal {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background-color: rgba(15, 23, 42, 0.35);
+        }
+
+        #messageModal.flex > div {
+            background: rgba(255, 255, 255, 0.97);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+        }
+
+        /* Success Icon checkmark custom drawing */
+        @keyframes drawCheckmark {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* Responsive Mobile View for Survey Table */
+        @media (max-width: 767px) {
             .section-title {
                 align-items: flex-start;
                 font-size: 1.35rem;
             }
 
             .page-header h1 {
-                font-size: 1.75rem;
-                line-height: 1.18;
+                font-size: 1.85rem;
+                line-height: 1.15;
             }
 
             .header-illustration {
-                width: 270px;
-                right: -80px;
+                width: 250px;
+                right: -70px;
+                bottom: -20px;
             }
 
             .header-unit {
@@ -323,25 +543,153 @@
             }
 
             .header-title {
-                margin-top: 1rem;
-                font-size: 2.1rem;
-                line-height: 1.12;
+                margin-top: 0.85rem;
+                font-size: 2.2rem;
+                line-height: 1.1;
             }
 
             .header-subtitle {
-                font-size: 0.92rem;
-                line-height: 1.65;
+                font-size: 0.95rem;
+                line-height: 1.6;
+            }
+
+            /* Responsive Table transformation */
+            .survey-table thead {
+                display: none;
+            }
+            
+            .survey-table, 
+            .survey-table tbody, 
+            .survey-table tr, 
+            .survey-table td {
+                display: block;
+                width: 100%;
+            }
+            
+            .survey-table-wrap {
+                border: none;
+                background: transparent;
+            }
+            
+            .survey-table {
+                min-width: 100% !important;
+            }
+            
+            /* Survey section header */
+            .survey-section-row {
+                margin-top: 1.5rem;
+                margin-bottom: 0.75rem;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            }
+            
+            .survey-section-row th {
+                display: block;
+                width: 100%;
+                padding: 0.85rem 1.15rem !important;
+                background: #ccfbf1 !important;
+                color: #0f766e !important;
+                font-size: 0.9rem !important;
+                border-radius: 12px;
+                border-bottom: none !important;
+            }
+            
+            /* Question row block card */
+            .question-row {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 18px;
+                padding: 1.25rem;
+                margin-bottom: 1rem;
+                box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.03), 0 2px 4px -1px rgba(15, 23, 42, 0.02);
+                transition: all 0.25s ease;
+            }
+            
+            .question-row:hover {
+                border-color: #99f6e4;
+                transform: translateY(-2px);
+                box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.05);
+            }
+            
+            .question-row td:first-child {
+                padding: 0 0 1rem 0 !important;
+                font-weight: 700;
+                font-size: 0.95rem;
+                color: #1e293b;
+                border-bottom: 1px dashed #e2e8f0;
+                border-left: none !important;
+            }
+            
+            /* Rating cells wrap in flex row */
+            .question-row td:not(:first-child) {
+                display: inline-flex;
+                width: 20%;
+                justify-content: center;
+                padding: 0.85rem 0 0 0 !important;
+                border-bottom: none !important;
             }
         }
 
-        #messageModal {
-            backdrop-filter: blur(4px);
+        /* Success & Error modal styling helpers */
+        #modalIcon.text-teal-600 {
+            color: transparent !important;
+            position: relative;
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 1.5rem auto;
+            border-radius: 50%;
+            background: #f0fdfa;
+            border: 3px solid #22c55e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #modalIcon.text-teal-600::after {
+            content: "";
+            position: absolute;
+            width: 14px;
+            height: 28px;
+            border-right: 4px solid #22c55e;
+            border-bottom: 4px solid #22c55e;
+            transform: rotate(45deg) translate(-2px, -6px);
+            transform-origin: center;
+            animation: drawCheckmark 0.3s ease-out forwards;
+        }
+        
+        #modalIcon.text-red-600 {
+            color: transparent !important;
+            position: relative;
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 1.5rem auto;
+            border-radius: 50%;
+            background: #fef2f2;
+            border: 3px solid #ef4444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #modalIcon.text-red-600::after {
+            content: "!";
+            color: #ef4444;
+            font-size: 2.25rem;
+            font-weight: 800;
+            line-height: 1;
+            position: absolute;
+            transform: scale(0.8);
+            animation: modalZoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
     </style>
 </head>
 <body class="p-4 font-sans text-slate-900 antialiased md:p-6 lg:p-10">
-    <main class="relative z-10 mx-auto max-w-[1200px] overflow-hidden rounded-[20px] bg-white">
-        <header class="page-header px-5 py-8 text-white md:px-10">
+    <!-- Ambient background blobs -->
+    <div class="bg-blob bg-blob-1" aria-hidden="true"></div>
+    <div class="bg-blob bg-blob-2" aria-hidden="true"></div>
+    <div class="bg-blob bg-blob-3" aria-hidden="true"></div>
+
+    <main class="relative z-10 mx-auto max-w-[1200px] overflow-hidden rounded-[24px] glass-container">
+        <header class="page-header px-6 py-8 text-white md:px-12 md:py-10">
             <svg class="header-illustration" viewBox="0 0 420 260" fill="none" aria-hidden="true">
                 <path d="M40 210H380" stroke="white" stroke-width="10" stroke-linecap="round"/>
                 <path d="M95 210V112H325V210" stroke="white" stroke-width="10" stroke-linejoin="round"/>
@@ -350,12 +698,12 @@
                 <path d="M62 78C76 54 102 48 126 62M306 56C328 38 358 44 372 66" stroke="white" stroke-width="8" stroke-linecap="round"/>
                 <path d="M24 210C42 180 72 176 92 210M328 210C348 172 390 176 404 210" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <div class="relative z-10 flex min-h-[172px] flex-col items-center justify-center gap-7 text-center md:flex-row md:justify-start md:text-left">
-                <div class="flex h-28 w-28 shrink-0 items-center justify-center bg-white p-2 shadow-[0_8px_24px_rgba(15,23,42,.14)] ring-1 ring-white/60 md:h-32 md:w-32">
+            <div class="relative z-10 flex min-h-[172px] flex-col items-center justify-center gap-8 text-center md:flex-row md:justify-start md:text-left">
+                <div class="flex h-28 w-28 shrink-0 items-center justify-center bg-white/95 p-2 rounded-[20px] shadow-[0_12px_32px_rgba(15,23,42,0.15)] border border-white/60 md:h-32 md:w-32">
                     <img
                         src="assets/logo_phu_luong.jpg"
                         alt="Logo phường Phú Lương"
-                        class="h-full w-full object-contain"
+                        class="h-full w-full object-contain rounded-[14px]"
                     >
                 </div>
                 <div class="header-copy w-full">
@@ -368,7 +716,7 @@
             </div>
         </header>
 
-        <form id="surveyForm" class="space-y-10 bg-slate-50 p-4 md:p-6 lg:p-10">
+        <form id="surveyForm" class="space-y-10 bg-slate-50/50 p-4 md:p-8 lg:p-12">
             <section class="form-section p-5 md:p-8">
                 <h2 class="section-title mb-6">
                     <span class="section-icon" aria-hidden="true">
@@ -377,37 +725,46 @@
                     I. THÔNG TIN CHUNG
                 </h2>
 
-                <div class="info-box mb-6 rounded-[16px] border border-teal-100 bg-teal-50 p-5 pl-6 text-sm leading-relaxed text-slate-700 md:text-base">
-                    <h3 class="mb-2 font-bold text-teal-900">1. Mục đích khảo sát</h3>
+                <div class="info-box mb-6 rounded-[20px] border border-teal-100 bg-teal-50/60 p-6 pl-8 text-sm leading-relaxed text-slate-700 md:text-base">
+                    <h3 class="mb-2 font-bold text-teal-900 flex items-center gap-2">
+                        <svg class="h-5 w-5 text-teal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        1. Mục đích khảo sát
+                    </h3>
                     <p class="text-justify">
                         Để giúp UBND phường triển khai đo lường sự hài lòng của tổ chức, cá nhân đối với sự phục vụ của các phòng chuyên môn thuộc UBND phường. Kính mong Ông (bà) cung cấp thông tin đầy đủ, chính xác, khách quan đối với việc thực hiện một số nội dung của chính quyền đối với ông (bà).
                     </p>
                 </div>
 
-                <div class="info-box mb-6 rounded-[16px] border border-teal-100 bg-teal-50 p-5 pl-6 text-sm leading-relaxed text-slate-700 md:text-base">
-                    <h3 class="mb-2 font-bold text-teal-900">2. Hướng dẫn trả lời</h3>
+                <div class="info-box mb-6 rounded-[20px] border border-teal-100 bg-teal-50/60 p-6 pl-8 text-sm leading-relaxed text-slate-700 md:text-base">
+                    <h3 class="mb-2 font-bold text-teal-900 flex items-center gap-2">
+                        <svg class="h-5 w-5 text-teal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 113.536 0V21h-2v-3.414z" /></svg>
+                        2. Hướng dẫn trả lời
+                    </h3>
                     <p class="text-justify">
                         Xin Ông/Bà chọn một trong các chữ số <strong>1, 2, 3, 4, 5</strong> đối với từng nhận định; trong đó <strong>5 = Rất hài lòng, 4 = Hài lòng, 3 = Bình thường, 2 = Không hài lòng và 1 = Rất không hài lòng</strong>.
                     </p>
-                    <div class="mt-5 grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 lg:grid-cols-5">
-                        <div class="rating-scale-card flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-2xl" aria-hidden="true">😊</span><strong class="text-2xl text-teal-700">5</strong><span>Rất hài lòng</span></div>
-                        <div class="rating-scale-card flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-2xl" aria-hidden="true">🙂</span><strong class="text-2xl text-teal-700">4</strong><span>Hài lòng</span></div>
-                        <div class="rating-scale-card flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-2xl" aria-hidden="true">😐</span><strong class="text-2xl text-teal-700">3</strong><span>Bình thường</span></div>
-                        <div class="rating-scale-card flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-2xl" aria-hidden="true">🙁</span><strong class="text-2xl text-teal-700">2</strong><span>Không hài lòng</span></div>
-                        <div class="rating-scale-card flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-2xl" aria-hidden="true">😡</span><strong class="text-2xl text-teal-700">1</strong><span>Rất không hài lòng</span></div>
+                    <div class="mt-6 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2 lg:grid-cols-5">
+                        <div class="rating-scale-card rating-scale-card-5 flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-3xl filter drop-shadow-sm mb-1" aria-hidden="true">😊</span><strong class="text-2xl font-extrabold text-emerald-600">5</strong><span class="text-xs font-semibold text-emerald-800">Rất hài lòng</span></div>
+                        <div class="rating-scale-card rating-scale-card-4 flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-3xl filter drop-shadow-sm mb-1" aria-hidden="true">🙂</span><strong class="text-2xl font-extrabold text-sky-600">4</strong><span class="text-xs font-semibold text-sky-850">Hài lòng</span></div>
+                        <div class="rating-scale-card rating-scale-card-3 flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-3xl filter drop-shadow-sm mb-1" aria-hidden="true">😐</span><strong class="text-2xl font-extrabold text-amber-600">3</strong><span class="text-xs font-semibold text-amber-850">Bình thường</span></div>
+                        <div class="rating-scale-card rating-scale-card-2 flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-3xl filter drop-shadow-sm mb-1" aria-hidden="true">🙁</span><strong class="text-2xl font-extrabold text-orange-600">2</strong><span class="text-xs font-semibold text-orange-850">Không hài lòng</span></div>
+                        <div class="rating-scale-card rating-scale-card-1 flex flex-col items-center justify-center gap-1 p-4 text-center"><span class="text-3xl filter drop-shadow-sm mb-1" aria-hidden="true">😡</span><strong class="text-2xl font-extrabold text-red-600">1</strong><span class="text-xs font-semibold text-red-850">Rất không hài lòng</span></div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-[1fr_2fr]">
-                    <div class="info-box rounded-[16px] border border-amber-200 bg-amber-50 p-5 pl-6 text-amber-800">
-                        <p class="font-semibold text-amber-900">Mã số phiếu</p>
-                        <p class="mt-1 text-sm leading-relaxed text-amber-800">
+                    <div class="info-box rounded-[20px] border border-amber-100 bg-amber-50/60 p-6 pl-8 text-amber-800">
+                        <p class="font-bold text-amber-900 flex items-center gap-2">
+                            <svg class="h-5 w-5 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16" /></svg>
+                            Mã số phiếu
+                        </p>
+                        <p class="mt-2 text-sm leading-relaxed text-amber-800/90 text-justify">
                             Ông/bà không cần nhập mã. Hệ thống tự động cấp mã từ 001 đến 200 sau khi gửi phiếu thành công.
                         </p>
                     </div>
-                    <div class="input-card p-5">
-                        <label class="mb-2 block font-semibold" for="linhVuc">
-                            Lĩnh vực/thủ tục hành chính đã giải quyết <span class="text-red-600">*</span>
+                    <div class="input-card p-6">
+                        <label class="mb-2 block font-bold text-slate-700 flex items-center gap-1.5" for="linhVuc">
+                            Lĩnh vực/thủ tục hành chính đã giải quyết <span class="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -415,8 +772,8 @@
                             name="linhVuc"
                             required
                             maxlength="500"
-                            class="w-full rounded-[12px] border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm transition placeholder:text-slate-400 hover:border-teal-400 focus:border-teal-700 focus:ring-4 focus:ring-teal-100"
-                            placeholder="Nhập lĩnh vực hoặc thủ tục hành chính đã giải quyết"
+                            class="w-full rounded-[14px] border-2 border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-teal-300 focus:border-teal-600 focus:ring-4 focus:ring-teal-50/80 outline-none"
+                            placeholder="Nhập tên lĩnh vực hoặc tên thủ tục hành chính đã làm..."
                         >
                     </div>
                 </div>
@@ -441,37 +798,46 @@
                 </h2>
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     <fieldset class="fieldset-card px-6 pb-6 pt-6">
-                        <legend class="font-bold text-slate-800">Giới tính <span class="text-red-600">*</span></legend>
-                        <div class="space-y-3">
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="gioiTinh" value="Nam" required><span>1. Nam</span></label>
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="gioiTinh" value="Nữ"><span>2. Nữ</span></label>
+                        <legend class="font-bold text-slate-800 flex items-center gap-2">
+                            <svg class="h-5 w-5 text-teal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                            Giới tính <span class="text-red-500 ml-1">*</span>
+                        </legend>
+                        <div class="grid grid-cols-1 gap-3">
+                            <label><input type="radio" name="gioiTinh" value="Nam" required><span>1. Nam</span></label>
+                            <label><input type="radio" name="gioiTinh" value="Nữ"><span>2. Nữ</span></label>
                         </div>
                     </fieldset>
 
                     <fieldset class="fieldset-card px-6 pb-6 pt-6">
-                        <legend class="font-bold text-slate-800">Độ tuổi <span class="text-red-600">*</span></legend>
-                        <div class="space-y-3">
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="doTuoi" value="Từ 18 - 24 tuổi" required><span>1. Từ 18 - 24 tuổi</span></label>
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="doTuoi" value="Từ 25-34 tuổi"><span>2. Từ 25-34 tuổi</span></label>
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="doTuoi" value="Từ 35-49 tuổi"><span>3. Từ 35-49 tuổi</span></label>
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="doTuoi" value="Từ 50-60 tuổi"><span>4. Từ 50-60 tuổi</span></label>
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="doTuoi" value="Trên 60 tuổi"><span>5. Trên 60 tuổi</span></label>
+                        <legend class="font-bold text-slate-800 flex items-center gap-2">
+                            <svg class="h-5 w-5 text-teal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            Độ tuổi <span class="text-red-500 ml-1">*</span>
+                        </legend>
+                        <div class="grid grid-cols-1 gap-3">
+                            <label><input type="radio" name="doTuoi" value="Từ 18 - 24 tuổi" required><span>1. Từ 18 - 24 tuổi</span></label>
+                            <label><input type="radio" name="doTuoi" value="Từ 25-34 tuổi"><span>2. Từ 25-34 tuổi</span></label>
+                            <label><input type="radio" name="doTuoi" value="Từ 35-49 tuổi"><span>3. Từ 35-49 tuổi</span></label>
+                            <label><input type="radio" name="doTuoi" value="Từ 50-60 tuổi"><span>4. Từ 50-60 tuổi</span></label>
+                            <label><input type="radio" name="doTuoi" value="Trên 60 tuổi"><span>5. Trên 60 tuổi</span></label>
                         </div>
                     </fieldset>
 
                     <fieldset class="fieldset-card px-6 pb-6 pt-6 md:col-span-2 lg:col-span-1">
-                        <legend class="font-bold text-slate-800">Trình độ <span class="text-red-600">*</span></legend>
-                        <div class="space-y-3">
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Tiểu học" required><span>1. Tiểu học</span></label>
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Trung học cơ sở (Cấp II)"><span>2. Trung học cơ sở (Cấp II)</span></label>
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Trung học phổ thông (Cấp 3)"><span>3. Trung học phổ thông (Cấp 3)</span></label>
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Đại học"><span>4. Đại học</span></label>
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Dạy nghề, Trung cấp, Cao đẳng"><span>5. Dạy nghề, Trung cấp, Cao đẳng</span></label>
-                            <label class="flex cursor-pointer items-center gap-3 p-2"><input type="radio" name="trinhDo" value="Sau Đại học"><span>6. Sau Đại học</span></label>
+                        <legend class="font-bold text-slate-800 flex items-center gap-2">
+                            <svg class="h-5 w-5 text-teal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                            Trình độ <span class="text-red-500 ml-1">*</span>
+                        </legend>
+                        <div class="grid grid-cols-1 gap-3">
+                            <label><input type="radio" name="trinhDo" value="Tiểu học" required><span>1. Tiểu học</span></label>
+                            <label><input type="radio" name="trinhDo" value="Trung học cơ sở (Cấp II)"><span>2. Trung học cơ sở (Cấp II)</span></label>
+                            <label><input type="radio" name="trinhDo" value="Trung học phổ thông (Cấp 3)"><span>3. Trung học phổ thông (Cấp 3)</span></label>
+                            <label><input type="radio" name="trinhDo" value="Đại học"><span>4. Đại học</span></label>
+                            <label><input type="radio" name="trinhDo" value="Dạy nghề, Trung cấp, Cao đẳng"><span>5. Dạy nghề, Trung cấp, Cao đẳng</span></label>
+                            <label><input type="radio" name="trinhDo" value="Sau Đại học"><span>6. Sau Đại học</span></label>
                         </div>
                     </fieldset>
                 </div>
-                <p class="mt-8 rounded-[16px] bg-teal-50 px-4 py-4 text-center text-lg font-bold text-teal-800 ring-1 ring-teal-100">Trân trọng cảm ơn ông/bà!</p>
+                <p class="mt-8 rounded-[20px] bg-teal-50/60 px-4 py-5 text-center text-lg font-extrabold text-teal-800 border border-teal-100 shadow-sm">Trân trọng cảm ơn ông/bà!</p>
             </section>
 
             <div class="text-center">
@@ -486,15 +852,16 @@
         </form>
     </main>
 
-    <div id="messageModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/55 p-4">
-        <div class="w-full max-w-md rounded-lg bg-white p-7 text-center shadow-2xl ring-1 ring-slate-900/10">
-            <div id="modalIcon" class="mb-4 text-5xl font-bold"></div>
-            <h2 id="modalTitle" class="mb-2 text-2xl font-bold text-slate-800">Thông báo</h2>
-            <p id="modalMessage" class="mb-5 text-slate-700"></p>
-            <a id="modalFileLink" href="#" target="_blank" rel="noopener noreferrer" class="mb-6 hidden font-semibold text-teal-700 underline hover:text-teal-900">
+    <div id="messageModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="w-full max-w-md p-8 text-center">
+            <div id="modalIcon" class="mb-4"></div>
+            <h2 id="modalTitle" class="mb-3 text-2xl font-extrabold text-slate-800">Thông báo</h2>
+            <p id="modalMessage" class="mb-6 text-slate-650 leading-relaxed text-sm md:text-base"></p>
+            <a id="modalFileLink" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 mb-6 font-bold text-teal-600 hover:text-teal-700 underline hover:no-underline transition-all">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                 Xem bản PDF đã lưu
             </a>
-            <button type="button" onclick="closeModal()" class="w-full rounded-lg bg-teal-700 px-6 py-2 font-bold text-white hover:bg-teal-800">
+            <button type="button" onclick="closeModal()" class="w-full rounded-xl bg-teal-700 px-6 py-3 font-bold text-white shadow-lg shadow-teal-700/20 hover:bg-teal-800 hover:shadow-xl hover:shadow-teal-700/30 transition-all duration-200">
                 Đóng
             </button>
         </div>
@@ -560,8 +927,9 @@
                     <td class="px-4 py-4 text-sm leading-relaxed text-slate-900">${question}</td>
                     ${ratingOptions.map((option, index) => `
                         <td class="px-2 py-3 text-center">
-                            <label class="choice-label inline-flex cursor-pointer items-center justify-center p-2" aria-label="${question} - ${option.value} ${option.label}">
-                                <input type="radio" name="${inputName}" value="${option.value}" ${index === 0 ? "required" : ""}>
+                            <label class="choice-label inline-flex cursor-pointer items-center justify-center" aria-label="${question} - ${option.value} ${option.label}">
+                                <input type="radio" name="${inputName}" value="${option.value}" class="sr-only" ${index === 0 ? "required" : ""}>
+                                <span class="custom-radio-btn">${option.value}</span>
                             </label>
                         </td>
                     `).join("")}
